@@ -1,5 +1,6 @@
 # IDE
 .idea
+.env
 
 ## Generated
 node_modules
