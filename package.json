@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "name": "minecraftians-server-automation",
+  "description": "An API to help link third party APIs and automate the server creation/destruction. In this case, we are making use of Zapier, Discord and Digital Ocean so the idea is to text via the Discord so we can create/destroy servers on the fly depending on when somebody wants to play",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legiaifenix/minecraftians-server-automation.git"
+  },
+  "keywords": [
+    "minecraft",
+    "automation",
+    "server",
+    "digitalocean",
+    "zapier"
+  ],
+  "author": "Diogo Santo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/legiaifenix/minecraftians-server-automation/issues"
+  },
+  "homepage": "https://github.com/legiaifenix/minecraftians-server-automation#readme"
+}
