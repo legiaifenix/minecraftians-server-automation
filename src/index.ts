@@ -16,4 +16,5 @@ app.get('/', (req: Request, res: Response) => {
     res.send('<h1>Hello from the TypeScript world!</h1>');
 });
 
+const discordClient = require('./api/discord/client');
 app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
