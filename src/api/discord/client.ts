@@ -1,23 +1,44 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"] });
+import {Collection} from "discord.js";
+import path from "path";
+import * as fs from "fs";
 
-const prefix = "!";
+const { Client } = require('discord.js');
+const client = new Client({ intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"] });
+const deployedCommand = require('./deploy-commands');
+
+// Prepares the commands and attach them to Client
+client.commands = new Collection();
+
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter((file: any) => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+
+    // Set a new item in the Collection
+    // With the key as the command name and the value as the exported module
+    console.log(command.data.name);
+    client.commands.set(command.data.name, command);
+}
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on('messageCreate', async (message: any) => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+client.on('interactionCreate', async (interaction: any) => {
+    if (!interaction.isCommand()) return;
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
+    const command = client.commands.get(interaction.commandName);
 
-    if (command === 'hi')
-        return message.reply('Hello there!');
+    if (!command) return;
 
-    if (command === 'server')
-        return message.reply('No service yet attached for that');
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
